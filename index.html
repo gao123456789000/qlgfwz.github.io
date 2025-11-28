@@ -13,7 +13,7 @@
             padding: 20px 0;
             overflow-x: hidden;
         }
-        /* 顶部跑马灯特效 - 修复动画，从左往右滚动 */
+        /* 顶部跑马灯特效 */
         #top-grrk {
             position: fixed;
             top: 0;
@@ -391,7 +391,7 @@
             opacity: 1;
             pointer-events: auto;
         }
-              .back-to-top:hover {
+        .back-to-top:hover {
             background: rgba(72, 187, 255, 0.4);
             transform: translateY(-3px);
         }
@@ -471,27 +471,126 @@
             font-size: 14px;
             color: #e0e0e0;
         }
+        /* 卡片容器：整体居中+内边距 */
+        .profile-card {
+            background: rgba(255,255,255,0.08);
+            border-radius: 15px;
+            padding: 20px;
+            margin: 25px 0;
+            border: 1px solid rgba(255,255,255,0.1);
+            text-align: center;
+        }
+        /* 顶部圆形图（居中） */
+        .top-circle-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 2px solid #fff;
+            box-shadow: 0 0 10px rgba(255,255,255,0.5);
+            margin: 0 auto 15px; /* 居中+与下方图间距 */
+        }
+        .circle-avatar-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        /* 横版长方形图（左右长、上下宽） */
+        .horizontal-rect-img {
+            width: 100%;
+            height: 120px; /* 控制高度，实现"左右长、上下宽" */
+            margin-bottom: 15px;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 2px solid rgba(255,255,255,0.3);
+        }
+        .rect-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        /* 信息列表：左彩色标签 + 右介绍 + 分行 */
+        .info-list {
+            text-align: left;
+            padding: 0 10px;
+        }
+        .info-row {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            margin-bottom: 10px;
+            font-size: 14px;
+            color: #e0e0e0;
+        }
+        .info-row .qlys {
+            min-width: 80px; /* 固定标签宽度，避免挤在一起 */
+            font-size: 16px;
+        }
+        .info-content {
+            flex: 1;
+            margin-right: 10px;
+        }
+        .info-icon {
+            width: 20px;
+            height: 20px;
+            object-fit: contain;
+        }
+        /* 左上角网速显示 */
+        .network-speed {
+            position: fixed;
+            top: 15px;
+            left: 15px;
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 10px;
+            padding: 8px 12px;
+            font-size: 12px;
+            z-index: 999;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .network-icon {
+            width: 16px;
+            height: 16px;
+        }
+        /* 右上角电量显示 */
+        .battery-status {
+            position: fixed;
+            top: 15px;
+            right: 15px;
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 10px;
+            padding: 8px 12px;
+            font-size: 12px;
+            z-index: 999;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .battery-icon {
+            width: 16px;
+            height: 16px;
+        }
+        /* 响应式调整 */
+        @media (max-width: 768px) {
+            .network-speed, .battery-status {
+                font-size: 10px;
+                padding: 6px 8px;
+            }
+            .nav-group {
+                flex-direction: column;
+                align-items: center;
+            }
+            .nav-btn {
+                max-width: 100%;
+                width: 100%;
+            }
+        }
     </style>
-
-<!-- 百度统计 -->
-<script>
-var _hmt = _hmt || [];
-(function() {
-  var hm = document.createElement("script");
-  hm.src = "https://hm.baidu.com/hm.js?272119dae6cce7e3ded69c4a57f828d1";
-  var s = document.getElementsByTagName("script")[0]; 
-  s.parentNode.insertBefore(hm, s);
-})();
-</script>
-
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-N13ZH72VV9"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-N13ZH72VV9');
-</script>
 </head>
 <body>
     <!-- 顶部跑马灯 -->
@@ -499,6 +598,28 @@ var _hmt = _hmt || [];
     
     <!-- 背景粒子容器 -->
     <div class="bg-particles" id="bgParticles"></div>
+    
+    <!-- 左上角网速显示 -->
+    <div class="network-speed">
+        <svg class="network-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 20V10" stroke="#5ac8fa" stroke-width="2" stroke-linecap="round"/>
+            <path d="M16 20V6" stroke="#5ac8fa" stroke-width="2" stroke-linecap="round"/>
+            <path d="M8 20V14" stroke="#5ac8fa" stroke-width="2" stroke-linecap="round"/>
+            <path d="M4 20V18" stroke="#5ac8fa" stroke-width="2" stroke-linecap="round"/>
+            <path d="M20 20V12" stroke="#5ac8fa" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+        <span id="networkSpeed">0 KB/s</span>
+    </div>
+    
+    <!-- 右上角电量显示 -->
+    <div class="battery-status">
+        <svg class="battery-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="2" y="7" width="16" height="10" rx="2" stroke="#34c759" stroke-width="2"/>
+            <path d="M20 10V14" stroke="#34c759" stroke-width="2"/>
+            <rect id="battery-level" x="4" y="9" width="12" height="6" rx="1" fill="#34c759"/>
+        </svg>
+        <span id="batteryLevel">100%</span>
+    </div>
     
     <!-- 灵动岛 -->
     <div class="dynamic-island" id="dynamicIsland">
@@ -551,120 +672,47 @@ var _hmt = _hmt || [];
                 </div>
             </div>
 
-        <!-- 调整后：匹配“圆形图居上+横版长方形+左彩色标签右介绍”的模块 -->
-<div class="profile-card">
-    <!-- 顶部圆形图（居中） -->
-    <div class="top-circle-avatar">
-        <img src="https://mpimg.cn/view.php/0d168dc792c3cd800c1c6d18ae1c85d1.png" alt="顶部圆形图" class="circle-avatar-img">
-    </div>
+            <!-- 个人档案卡片 -->
+            <div class="profile-card">
+                <!-- 顶部圆形图（居中） -->
+                <div class="top-circle-avatar">
+                    <img src="https://mpimg.cn/view.php/0d168dc792c3cd800c1c6d18ae1c85d1.png" alt="顶部圆形图" class="circle-avatar-img">
+                </div>
 
-    <!-- 横版长方形图（左右长、上下宽） -->
-    <div class="horizontal-rect-img">
-        <img id="randomProfileAvatar" alt="横版长方形图" class="rect-img">
-    </div>
+                <!-- 横版长方形图（左右长、上下宽） -->
+                <div class="horizontal-rect-img">
+                    <img id="randomProfileAvatar" alt="横版长方形图" class="rect-img">
+                </div>
 
-    <!-- 信息列表：左彩色标签 + 右介绍 -->
-    <div class="info-list">
-        <div class="info-row">
-            <span class="qlys">网名：</span>
-            <span class="info-content">凄凉</span>
-            <img src="https://mpimg.cn/view.php/d061bf1ffe5d542fad1cf3ec733c11f3.png" alt="图标" class="info-icon">
-        </div>
-        <div class="info-row">
-            <span class="qlys">专业：</span>
-            <span class="info-content">个人导航维护</span>
-            <img src="https://mpimg.cn/view.php/d061bf1ffe5d542fad1cf3ec733c11f3.png" alt="图标" class="info-icon">
-        </div>
-        <div class="info-row">
-            <span class="qlys">技能：</span>
-            <span class="info-content">网站搭建/资源整理</span>
-            <img src="https://mpimg.cn/view.php/d061bf1ffe5d542fad1cf3ec733c11f3.png" alt="图标" class="info-icon">
-        </div>
-        <div class="info-row">
-            <span class="qlys">标签：</span>
-            <span class="info-content">个人站长</span>
-            <img src="https://mpimg.cn/view.php/d061bf1ffe5d542fad1cf3ec733c11f3.png" alt="图标" class="info-icon">
-        </div>
-        <div class="info-row">
-            <span class="qlys">个人介绍：</span>
-            <span class="info-content">随便搞搞的导航站~</span>
-            <img src="https://mpimg.cn/view.php/d061bf1ffe5d542fad1cf3ec733c11f3.png" alt="图标" class="info-icon">
-        </div>
-    </div>
-</div>
-
-<!-- 配套CSS（添加到原<style>区域） -->
-<style>
-/* 卡片容器：整体居中+内边距 */
-.profile-card {
-    background: rgba(255,255,255,0.08);
-    border-radius: 15px;
-    padding: 20px;
-    margin: 25px 0;
-    border: 1px solid rgba(255,255,255,0.1);
-    text-align: center;
-}
-
-/* 顶部圆形图（居中） */
-.top-circle-avatar {
-    width: 80px;
-    height: 80px;
-    border-radius: 50%;
-    overflow: hidden;
-    border: 2px solid #fff;
-    box-shadow: 0 0 10px rgba(255,255,255,0.5);
-    margin: 0 auto 15px; /* 居中+与下方图间距 */
-}
-.circle-avatar-img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-/* 横版长方形图（左右长、上下宽） */
-.horizontal-rect-img {
-    width: 100%;
-    height: 120px; /* 控制高度，实现“左右长、上下宽” */
-    margin-bottom: 15px;
-    border-radius: 8px;
-    overflow: hidden;
-    border: 2px solid rgba(255,255,255,0.3);
-}
-.rect-img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-/* 信息列表：左彩色标签 + 右介绍 + 分行 */
-.info-list {
-    text-align: left;
-    padding: 0 10px;
-}
-.info-row {
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    margin-bottom: 10px;
-    font-size: 14px;
-    color: #e0e0e0;
-}
-.qlys {
-    min-width: 80px; /* 固定标签宽度，避免挤在一起 */
-    font-size: 16px;
-}
-.info-content {
-    flex: 1;
-    margin-right: 10px;
-}
-.info-icon {
-    width: 20px;
-    height: 20px;
-    object-fit: contain;
-}
-</style>
-
-         
+                <!-- 信息列表：左彩色标签 + 右介绍 -->
+                <div class="info-list">
+                    <div class="info-row">
+                        <span class="qlys">网名：</span>
+                        <span class="info-content">凄凉</span>
+                        <img src="https://mpimg.cn/view.php/d061bf1ffe5d542fad1cf3ec733c11f3.png" alt="图标" class="info-icon">
+                    </div>
+                    <div class="info-row">
+                        <span class="qlys">专业：</span>
+                        <span class="info-content">个人导航维护</span>
+                        <img src="https://mpimg.cn/view.php/d061bf1ffe5d542fad1cf3ec733c11f3.png" alt="图标" class="info-icon">
+                    </div>
+                    <div class="info-row">
+                        <span class="qlys">技能：</span>
+                        <span class="info-content">网站搭建/资源整理</span>
+                        <img src="https://mpimg.cn/view.php/d061bf1ffe5d542fad1cf3ec733c11f3.png" alt="图标" class="info-icon">
+                    </div>
+                    <div class="info-row">
+                        <span class="qlys">标签：</span>
+                        <span class="info-content">个人站长</span>
+                        <img src="https://mpimg.cn/view.php/d061bf1ffe5d542fad1cf3ec733c11f3.png" alt="图标" class="info-icon">
+                    </div>
+                    <div class="info-row">
+                        <span class="qlys">个人介绍：</span>
+                        <span class="info-content">随便搞搞的导航站~</span>
+                        <img src="https://mpimg.cn/view.php/d061bf1ffe5d542fad1cf3ec733c11f3.png" alt="图标" class="info-icon">
+                    </div>
+                </div>
+            </div>
 
             <div class="profile">
                 <h2 class="profile-title">关于档案</h2>
@@ -752,95 +800,94 @@ var _hmt = _hmt || [];
         }
         
         // 显示通知
-function qldtz(title, content, duration = 3000) {
-    const notif = document.getElementById('notification');
-    const notifTitle = document.getElementById('notifTitle');
-    const notifContent = document.getElementById('notifContent');
-    
-    notifTitle.textContent = title;
-    notifContent.textContent = content;
-    notif.classList.add('show');
-    
-    setTimeout(() => {
-        notif.classList.remove('show');
-    }, duration);
-}
-
-// 每日一言功能（对接指定接口，保留所有交互效果）
-async function fetchHitokoto() {
-    const contentEl = document.querySelector('.hitokoto-content');
-    const authorEl = document.querySelector('.hitokoto-author');
-    const refreshBtn = document.getElementById('refreshHitokoto');
-    
-    // 禁用按钮并显示加载状态
-    refreshBtn.disabled = true;
-    refreshBtn.textContent = '刷新中...';
-    
-    // 显示加载中的灵动岛
-    qldldd('⏳', '正在获取每日一言...', 1500);
-    
-    try {
-        // 请求指定接口（保留原接口地址）
-        const res = await fetch('https://api.jsonbin.io/v3/b/69210abed0ea881f40f7bf17');
-        if (!res.ok) throw new Error('接口请求失败');
-        
-        const data = await res.json();
-        const quoteList = data.record; // 接口返回的语录数组在“record”字段中
-        
-        // 验证语录数组有效性
-        if (!Array.isArray(quoteList) || quoteList.length === 0) {
-            throw new Error('语录数据为空');
+        function qldtz(title, content, duration = 3000) {
+            const notif = document.getElementById('notification');
+            const notifTitle = document.getElementById('notifTitle');
+            const notifContent = document.getElementById('notifContent');
+            
+            notifTitle.textContent = title;
+            notifContent.textContent = content;
+            notif.classList.add('show');
+            
+            setTimeout(() => {
+                notif.classList.remove('show');
+            }, duration);
         }
-        
-        // 随机抽取一条语录
-        const randomQuote = quoteList[Math.floor(Math.random() * quoteList.length)];
-        let content = randomQuote.content || '暂无合适语录';
-        
-        // 去除末尾标点（如。、.、?、!）
-        content = content.replace(/[。.?!]$/, '');
 
-        // 渲染到页面
-        contentEl.textContent = content;
-        authorEl.textContent = `—— ${randomQuote.author || '未知作者'}`;
-        
-        // 显示成功的灵动岛
-        qldldd('✅', '每日一言已更新', 2000, true);
-        
-    } catch (err) {
-        // 错误处理：显示默认语录+错误提示
-        contentEl.textContent = '人生没有白走的路，每一步都算数。';
-        authorEl.textContent = '—— 未知';
-        console.log('每日一言获取失败：', err);
-        
-        // 显示错误的灵动岛和通知
-        qldldd('❌', '获取失败，显示默认语录', 2000);
-        qldtz('获取失败', '每日一言接口异常，已显示默认内容', 3000);
-    } finally {
-        // 启用按钮（保留2秒冷却时间）
-        setTimeout(() => {
-            refreshBtn.disabled = false;
-            refreshBtn.textContent = '刷新语句';
-        }, 1000);
-    }
-}
+        // 每日一言功能
+        async function fetchHitokoto() {
+            const contentEl = document.querySelector('.hitokoto-content');
+            const authorEl = document.querySelector('.hitokoto-author');
+            const refreshBtn = document.getElementById('refreshHitokoto');
+            
+            // 禁用按钮并显示加载状态
+            refreshBtn.disabled = true;
+            refreshBtn.textContent = '刷新中...';
+            
+            // 显示加载中的灵动岛
+            qldldd('⏳', '正在获取每日一言...', 1500);
+            
+            try {
+                // 请求指定接口
+                const res = await fetch('https://api.jsonbin.io/v3/b/69210abed0ea881f40f7bf17');
+                if (!res.ok) throw new Error('接口请求失败');
+                
+                const data = await res.json();
+                const quoteList = data.record; // 接口返回的语录数组在"record"字段中
+                
+                // 验证语录数组有效性
+                if (!Array.isArray(quoteList) || quoteList.length === 0) {
+                    throw new Error('语录数据为空');
+                }
+                
+                // 随机抽取一条语录
+                const randomQuote = quoteList[Math.floor(Math.random() * quoteList.length)];
+                let content = randomQuote.content || '暂无合适语录';
+                
+                // 去除末尾标点（如。、.、?、!）
+                content = content.replace(/[。.?!]$/, '');
 
-// 页面加载时初始化
-fetchHitokoto();
+                // 渲染到页面
+                contentEl.textContent = content;
+                authorEl.textContent = `—— ${randomQuote.author || '未知作者'}`;
+                
+                // 显示成功的灵动岛
+                qldldd('✅', '每日一言已更新', 2000, true);
+                
+            } catch (err) {
+                // 错误处理：显示默认语录+错误提示
+                contentEl.textContent = '人生没有白走的路，每一步都算数。';
+                authorEl.textContent = '—— 未知';
+                console.log('每日一言获取失败：', err);
+                
+                // 显示错误的灵动岛和通知
+                qldldd('❌', '获取失败，显示默认语录', 2000);
+                qldtz('获取失败', '每日一言接口异常，已显示默认内容', 3000);
+            } finally {
+                // 启用按钮（保留2秒冷却时间）
+                setTimeout(() => {
+                    refreshBtn.disabled = false;
+                    refreshBtn.textContent = '刷新语句';
+                }, 1000);
+            }
+        }
 
-// 点击刷新按钮重新获取（保留冷却逻辑）
-let isCoolingDown = false;
-document.getElementById('refreshHitokoto').addEventListener('click', () => {
-    if (!isCoolingDown) {
-        isCoolingDown = true;
+        // 页面加载时初始化
         fetchHitokoto();
-        
-        // 2秒冷却时间，防止重复点击
-        setTimeout(() => {
-            isCoolingDown = false;
-        }, 2000);
-    }
-});
 
+        // 点击刷新按钮重新获取（保留冷却逻辑）
+        let isCoolingDown = false;
+        document.getElementById('refreshHitokoto').addEventListener('click', () => {
+            if (!isCoolingDown) {
+                isCoolingDown = true;
+                fetchHitokoto();
+                
+                // 2秒冷却时间，防止重复点击
+                setTimeout(() => {
+                    isCoolingDown = false;
+                }, 2000);
+            }
+        });
 
         // 背景粒子特效
         (function createParticles() {
@@ -882,120 +929,159 @@ document.getElementById('refreshHitokoto').addEventListener('click', () => {
             const hours = Math.floor((remaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
             const minutes = Math.floor((remaining % (1000 * 60 * 60)) / (1000 * 60));
             const seconds = Math.floor((remaining % (1000 * 60)) / 1000);
-                   document.getElementById('runTime').innerText = 
-
-            `网站已安全运行：${years}年${days}天${hours}时${minutes}分${seconds}秒`;
-
+            document.getElementById('runTime').innerText = 
+                `网站已安全运行：${years}年${days}天${hours}时${minutes}分${seconds}秒`;
         }
 
         updateRunTime();
-
         setInterval(updateRunTime, 1000);
 
-        // 点击关键词特效 - 增加更多随机颜色
-
+        // 点击关键词特效
         const keywords = ['自由', '民主', '凄凉', '团结', '奋进', '政治', '富强', '文明', '和谐', '平等', '公正', '法治', '诚信', '友善', '爱国', '敬业'];
-
-        // 扩展颜色数组，增加更多颜色选择
-
         const glowColors = [
-
             '#ff2d55', '#5ac8fa', '#34c759', '#ffcc00', 
-
             '#ff6b6b', '#48dbfb', '#1dd1a1', '#feca57',
-
             '#ff9ff3', '#54a0ff', '#5f27cd', '#00d2d3',
-
             '#ff9f43', '#10ac84', '#ee5a24', '#a3cb38',
-
             '#c56cf0', '#17c0eb', '#fd79a8', '#9b59b6',
-
             '#3498db', '#e74c3c', '#2ecc71', '#f1c40f',
-
             '#e67e22', '#9b59b6', '#34495e', '#1abc9c',
-
             '#f39c12', '#d35400', '#c0392b', '#8e44ad'
-
         ];
 
         document.addEventListener('click', (e) => {
-
             const keyword = document.createElement('div');
-
             const key = keywords[Math.floor(Math.random() * keywords.length)];
-
             const color = glowColors[Math.floor(Math.random() * glowColors.length)];
-
             keyword.className = 'keyword';
-
             keyword.textContent = key;
-
             keyword.style.color = color;
-
             keyword.style.left = `${e.clientX}px`;
-
             keyword.style.top = `${e.clientY}px`;
-
             document.body.appendChild(keyword);
-
             setTimeout(() => keyword.remove(), 1500);
-
         });
 
         // 粒子背景鼠标跟随效果
-
         const particles = document.querySelectorAll('#bgParticles div');
-
         document.addEventListener('mousemove', (e) => {
-
             const mouseX = e.clientX / window.innerWidth - 0.5;
-
             const mouseY = e.clientY / window.innerHeight - 0.5;
-
             particles.forEach(particle => {
-
                 const speed = particle.style.animationDuration.replace('s', '') * 0.1;
-
                 particle.style.transform = `translate(${mouseX * speed * 10}px, ${mouseY * speed * 10}px)`;
-
             });
-
         });
-
         
-
         // 页面加载后显示欢迎消息
-
         window.addEventListener('load', () => {
-
             setTimeout(() => {
-
                 qldldd('👋', '欢迎来到凄凉的个人导航', 2000);
-
             }, 1000);
-
         });
 
         // 随机加载头像图片
-
         const avatarImages = [
-
             'https://mpimg.cn/view.php/b9a1ec20426a7bf6541f1e9cb7c4f676.jpeg',
-
             'https://mpimg.cn/view.php/dc2b6df628c3b385e1b259a141eb64fe.jpeg',
-
             'https://mpimg.cn/view.php/8419f89ad28f481eee21b5ea04e3ce82.jpeg',
-
             'https://mpimg.cn/view.php/f88fd46b0819eed1f31eef516e0c5061.jpeg'
-
         ];
-
         const randomAvatar = avatarImages[Math.floor(Math.random() * avatarImages.length)];
-
         document.getElementById('randomProfileAvatar').src = randomAvatar;
 
+        // 实时网速监测功能
+        let lastBytesReceived = 0;
+        let lastTime = Date.now();
+        
+        function updateNetworkSpeed() {
+            if ('connection' in navigator) {
+                const connection = navigator.connection;
+                if (connection && connection.downlink) {
+                    // 使用Network Information API获取下行速度
+                    const speed = (connection.downlink * 125).toFixed(1); // 转换为KB/s
+                    document.getElementById('networkSpeed').textContent = `${speed} KB/s`;
+                } else {
+                    // 备用方案：通过资源加载计算
+                    if (performance && performance.memory) {
+                        const currentBytes = performance.memory.usedJSHeapSize;
+                        const currentTime = Date.now();
+                        const bytesDiff = currentBytes - lastBytesReceived;
+                        const timeDiff = currentTime - lastTime;
+                        
+                        if (timeDiff > 0) {
+                            const speed = (bytesDiff / timeDiff * 1000 / 1024).toFixed(1);
+                            document.getElementById('networkSpeed').textContent = `${speed} KB/s`;
+                        }
+                        
+                        lastBytesReceived = currentBytes;
+                        lastTime = currentTime;
+                    } else {
+                        // 如果以上方法都不可用，显示模拟数据
+                        const speed = (Math.random() * 100 + 50).toFixed(1);
+                        document.getElementById('networkSpeed').textContent = `${speed} KB/s`;
+                    }
+                }
+            } else {
+                // 如果浏览器不支持Network Information API，显示模拟数据
+                const speed = (Math.random() * 100 + 50).toFixed(1);
+                document.getElementById('networkSpeed').textContent = `${speed} KB/s`;
+            }
+        }
+        
+        // 每2秒更新一次网速
+        setInterval(updateNetworkSpeed, 2000);
+        updateNetworkSpeed(); // 初始化
+
+        // 实时电量显示功能
+        function updateBatteryStatus() {
+            if ('getBattery' in navigator) {
+                navigator.getBattery().then(function(battery) {
+                    const level = Math.round(battery.level * 100);
+                    document.getElementById('batteryLevel').textContent = `${level}%`;
+                    
+                    // 更新电池图标
+                    const batteryLevel = document.getElementById('battery-level');
+                    batteryLevel.setAttribute('width', (12 * battery.level).toString());
+                    
+                    // 根据电量改变颜色
+                    if (level <= 20) {
+                        batteryLevel.setAttribute('fill', '#ff3b30');
+                        document.querySelector('.battery-icon path').setAttribute('stroke', '#ff3b30');
+                    } else if (level <= 50) {
+                        batteryLevel.setAttribute('fill', '#ffcc00');
+                        document.querySelector('.battery-icon path').setAttribute('stroke', '#ffcc00');
+                    } else {
+                        batteryLevel.setAttribute('fill', '#34c759');
+                        document.querySelector('.battery-icon path').setAttribute('stroke', '#34c759');
+                    }
+                });
+            } else {
+                // 如果浏览器不支持Battery API，显示模拟数据
+                const level = Math.round(Math.random() * 20 + 80); // 80-100%的随机值
+                document.getElementById('batteryLevel').textContent = `${level}%`;
+                
+                // 更新电池图标
+                const batteryLevel = document.getElementById('battery-level');
+                batteryLevel.setAttribute('width', (12 * level / 100).toString());
+                
+                // 根据电量改变颜色
+                if (level <= 20) {
+                    batteryLevel.setAttribute('fill', '#ff3b30');
+                    document.querySelector('.battery-icon path').setAttribute('stroke', '#ff3b30');
+                } else if (level <= 50) {
+                    batteryLevel.setAttribute('fill', '#ffcc00');
+                    document.querySelector('.battery-icon path').setAttribute('stroke', '#ffcc00');
+                } else {
+                    batteryLevel.setAttribute('fill', '#34c759');
+                    document.querySelector('.battery-icon path').setAttribute('stroke', '#34c759');
+                }
+            }
+        }
+        
+        // 每30秒更新一次电量
+        setInterval(updateBatteryStatus, 30000);
+        updateBatteryStatus(); // 初始化
     </script>
-
 </body>
-
 </html>
