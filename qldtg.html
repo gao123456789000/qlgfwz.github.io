@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>增强版HTML代码托管工具</title>
+    <title>HTML代码托管工具</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
@@ -42,7 +42,7 @@
         }
         
         .container {
-            max-width: 1400px;
+            max-width: 1200px;
             margin: 0 auto;
             background: rgba(255, 255, 255, 0.9);
             border-radius: 20px;
@@ -70,7 +70,7 @@
             padding: 30px;
         }
         
-        .editor-panel, .history-panel {
+        .editor-panel {
             margin-bottom: 30px;
         }
         
@@ -114,7 +114,6 @@
             display: flex;
             gap: 15px;
             flex-wrap: wrap;
-            margin-bottom: 20px;
         }
         
         .btn {
@@ -143,60 +142,40 @@
             background: var(--success);
         }
         
-        .history-list {
-            max-height: 300px;
-            overflow-y: auto;
-            border: 2px solid #ddd;
+        .status {
+            padding: 12px 20px;
             border-radius: 10px;
-            padding: 10px;
-            background: white;
-        }
-        
-        .history-item {
-            padding: 10px;
-            border-bottom: 1px solid #eee;
-            display: flex;
-            justify-content: space-between;
+            margin-top: 15px;
+            width: 100%;
+            display: none;
             align-items: center;
+            gap: 10px;
         }
         
-        .history-item:last-child {
-            border-bottom: none;
+        .status.info {
+            background: rgba(173, 216, 230, 0.3);
+            color: #0c5460;
+            border-left: 4px solid #5bc0de;
         }
         
-        .history-item .time {
-            font-size: 0.8rem;
-            color: #777;
+        .status.success {
+            background: rgba(144, 238, 144, 0.3);
+            color: #155724;
+            border-left: 4px solid var(--success);
         }
         
-        .history-item .actions {
-            display: flex;
-            gap: 5px;
-        }
-        
-        .history-item .action-btn {
-            padding: 5px 10px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            cursor: pointer;
-        }
-        
-        @media (max-width: 768px) {
-            .controls {
-                flex-direction: column;
-            }
-            
-            .btn {
-                width: 100%;
-            }
+        .status.error {
+            background: rgba(255, 182, 193, 0.3);
+            color: #721c24;
+            border-left: 4px solid var(--error);
         }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <h1><i class="fas fa-code"></i> 增强版HTML代码托管工具</h1>
-            <p>自动读取剪贴板内容，快速生成可分享链接</p>
+            <h1><i class="fas fa-code"></i> HTML代码托管工具</h1>
+            <p>快速生成可分享的HTML链接</p>
         </div>
         
         <div class="content">
@@ -204,7 +183,7 @@
                 <div class="panel-header">
                     <h2>代码编辑器</h2>
                 </div>
-                <textarea id="html-code" placeholder="HTML代码将自动从剪贴板读取，或在此手动输入..."></textarea>
+                <textarea id="html-code" placeholder="在此输入HTML代码..."></textarea>
                 
                 <div class="panel-header">
                     <h2>生成链接</h2>
@@ -225,15 +204,7 @@
                         <i class="fas fa-broom"></i> 清空编辑器
                     </button>
                 </div>
-            </div>
-            
-            <div class="history-panel">
-                <div class="panel-header">
-                    <h2>历史记录</h2>
-                </div>
-                <div id="history-list" class="history-list">
-                    <!-- 历史记录将在这里动态生成 -->
-                </div>
+                <div id="status" class="status"></div>
             </div>
         </div>
     </div>
@@ -246,49 +217,44 @@
             const openBtn = document.getElementById('open-btn');
             const clearBtn = document.getElementById('clear-btn');
             const shareUrl = document.getElementById('share-url');
-            const historyList = document.getElementById('history-list');
-            
-            // 从本地存储加载历史记录
-            loadHistory();
-            
-            // 自动读取剪贴板内容
-            autoPasteFromClipboard();
+            const status = document.getElementById('status');
             
             // 生成链接
             generateBtn.addEventListener('click', function() {
                 const htmlContent = htmlCode.value;
                 if (!htmlContent.trim()) {
-                    alert('请输入HTML代码');
+                    showStatus('请输入HTML代码', 'error');
                     return;
                 }
                 
                 // 创建Data URL
-                const dataUrl = `data:text/html;charset=utf-8,${encodeURIComponent(htmlContent)}`;
+                const dataUrl = createDataUrl(htmlContent);
                 shareUrl.value = dataUrl;
                 
-                // 保存到历史记录
-                saveToHistory(htmlContent, dataUrl);
+                showStatus('链接生成成功！', 'success');
             });
             
             // 复制链接
             copyBtn.addEventListener('click', function() {
                 if (!shareUrl.value) {
-                    alert('请先生成链接！');
+                    showStatus('请先生成链接！', 'error');
                     return;
                 }
                 
                 shareUrl.select();
                 document.execCommand('copy');
-                alert('链接已复制到剪贴板！');
+                
+                showStatus('链接已复制到剪贴板！', 'success');
             });
             
-            // 打开链接
+            // 打开链接 - 修复后的功能
             openBtn.addEventListener('click', function() {
                 if (!shareUrl.value) {
-                    alert('请先生成链接！');
+                    showStatus('请先生成链接！', 'error');
                     return;
                 }
                 
+                // 使用window.open直接打开Data URL
                 window.open(shareUrl.value, '_blank');
             });
             
@@ -296,10 +262,52 @@
             clearBtn.addEventListener('click', function() {
                 htmlCode.value = '';
                 shareUrl.value = '';
+                showStatus('编辑器已清空', 'info');
             });
             
-            // 自动从剪贴板粘贴
-            async function autoPasteFromClipboard() {
+            // 创建Data URL
+            function createDataUrl(htmlContent) {
+                // 确保HTML文档有基本结构
+                let fullHtml = htmlContent;
+                if (!htmlContent.includes('<!DOCTYPE html>') && !htmlContent.includes('<html>')) {
+                    fullHtml = `<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>生成的HTML页面</title>
+</head>
+<body>
+${htmlContent}
+</body>
+</html>`;
+                }
+                return `data:text/html;charset=utf-8,${encodeURIComponent(fullHtml)}`;
+            }
+            
+            // 显示状态消息
+            function showStatus(message, type) {
+                status.innerHTML = `<i class="fas fa-${getStatusIcon(type)}"></i> ${message}`;
+                status.className = 'status';
+                status.classList.add(type);
+                status.style.display = 'flex';
+                
+                // 5秒后隐藏状态消息
+                setTimeout(() => {
+                    status.style.display = 'none';
+                }, 5000);
+            }
+            
+            // 获取状态图标
+            function getStatusIcon(type) {
+                switch(type) {
+                    case 'success': return 'check-circle';
+                    case 'error': return 'exclamation-circle';
+                    default: return 'info-circle';
+                }
+            }
+            
+            // 尝试自动从剪贴板读取内容
+            setTimeout(async () => {
                 try {
                     const clipboardText = await navigator.clipboard.readText();
                     if (clipboardText && (clipboardText.includes('<html') || 
@@ -307,85 +315,12 @@
                                           clipboardText.includes('<p') || 
                                           clipboardText.trim().startsWith('<'))) {
                         htmlCode.value = clipboardText;
-                        alert('已自动从剪贴板加载HTML内容！');
+                        showStatus('已自动从剪贴板加载HTML内容！', 'success');
                     }
                 } catch (error) {
                     console.log('自动读取剪贴板失败');
                 }
-            }
-            
-            // 保存到历史记录
-            function saveToHistory(htmlContent, url) {
-                const history = JSON.parse(localStorage.getItem('htmlHostingHistory') || '[]');
-                
-                // 创建新记录
-                const newRecord = {
-                    id: Date.now(),
-                    content: htmlContent,
-                    url: url,
-                    timestamp: new Date().toLocaleString()
-                };
-                
-                // 添加到历史记录数组开头
-                history.unshift(newRecord);
-                
-                // 保存到本地存储
-                localStorage.setItem('htmlHostingHistory', JSON.stringify(history));
-                
-                // 更新UI
-                loadHistory();
-            }
-            
-            // 从本地存储加载历史记录
-            function loadHistory() {
-                const history = JSON.parse(localStorage.getItem('htmlHostingHistory') || '[]');
-                historyList.innerHTML = '';
-                
-                if (history.length === 0) {
-                    historyList.innerHTML = '<div class="history-item">暂无历史记录</div>';
-                    return;
-                }
-                
-                history.forEach(record => {
-                    const item = document.createElement('div');
-                    item.className = 'history-item';
-                    item.innerHTML = `
-                        <div>
-                            <div>${record.timestamp}</div>
-                            <div class="time">${record.content.substring(0, 50)}${record.content.length > 50 ? '...' : ''}</div>
-                        </div>
-                        <div class="actions">
-                            <button class="action-btn" onclick="window.open('${record.url}', '_blank')">打开</button>
-                            <button class="action-btn" onclick="copyToClipboard('${record.url}')">复制</button>
-                            <button class="action-btn" onclick="loadRecord('${record.id}')">编辑</button>
-                        </div>
-                    `;
-                    historyList.appendChild(item);
-                });
-            }
-            
-            // 复制到剪贴板
-            window.copyToClipboard = function(text) {
-                const textarea = document.createElement('textarea');
-                textarea.value = text;
-                document.body.appendChild(textarea);
-                textarea.select();
-                document.execCommand('copy');
-                document.body.removeChild(textarea);
-                alert('链接已复制！');
-            };
-            
-            // 加载历史记录
-            window.loadRecord = function(id) {
-                const history = JSON.parse(localStorage.getItem('htmlHostingHistory') || '[]');
-                const record = history.find(r => r.id == id);
-                
-                if (record) {
-                    htmlCode.value = record.content;
-                    shareUrl.value = record.url;
-                    htmlCode.focus();
-                }
-            };
+            }, 500);
         });
     </script>
 </body>
