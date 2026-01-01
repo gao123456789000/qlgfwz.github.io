@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>随机视频</title>
+    <style>
+        /* 纯视频铺满屏幕，无任何多余元素 */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { overflow: hidden; background: #000; }
+        video { width: 100vw; height: 100vh; object-fit: cover; /* 保持视频比例铺满，不拉伸 */ }
+    </style>
+</head>
+<body>
+    <!-- 视频容器，自动加载随机视频 -->
+    <video id="randomVideo" controls autoplay muted loop></video>
+
+    <script>
+        // 核心：替换成你的视频链接（支持本地视频、外网直链，格式mp4/mov/webm等）
+        const videoList = [
+            "https://bdcloud-player-new.cdn.bcebos.com/testvideo/mp4/av1/1080p/liulangdiqiu-av1-1080-faststart.mp4?use_xbridge3=true&loader_name=forest&need_sec_link=1&sec_link_scene=im&theme=light",
+            "https://test-videos.co.uk/vids/bigbuckbunny/mp4/h264/1080/Big_Buck_Bunny_1080_10s_1MB.mp4",
+            "4. https://sf1-cdn-tos.huoshanstatic.com/obj/media-fe/xgplayer_doc_video/mp4/xgplayer-demo-720p.mp4",
+            "https://xxx.com/video4.mp4",
+            // 按需无限添加
+        ];
+
+        // 随机获取一个视频链接
+        function getRandomVideo() {
+            const randomIndex = Math.floor(Math.random() * videoList.length);
+            return videoList[randomIndex];
+        }
+
+        // 初始化视频
+        const video = document.getElementById("randomVideo");
+        video.src = getRandomVideo();
+        // 视频播放完自动切换下一个随机视频（可选，不想自动切删掉这段即可）
+        video.onended = function() {
+            video.src = getRandomVideo();
+            video.play();
+        };
+    </script>
+</body>
+</html>
