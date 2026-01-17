@@ -1,0 +1,11 @@
+User-agent: *
+Allow: /
+Disallow: /node_modules/
+Disallow: /dist/
+Disallow: /assets/.DS_Store
+Disallow: /404.html?*
+Disallow: /search?*
+Crawl-delay: 10
+
+
+Sitemap: https://qlgfwz.github.io/sitemap.xml
