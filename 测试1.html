@@ -476,129 +476,6 @@
       color: #fff;
       font-size: 14px;
     }
-
-    /* 随机移动水印样式 - 修复层级 低于时间天气 */
-    .random-watermark {
-      position: fixed;
-      color: #E0FFFF;
-      text-shadow: 0 0 10px #E0FFFF;
-      pointer-events: none;
-      z-index: 1;
-      white-space: nowrap;
-      font-size: 16px;
-      opacity: 0.6;
-    }
-
-    /* ===== 注入特效升级 - 三重炫酷特效 ===== */
-    /* 1. 全屏网格扫描 */
-    #inject-grid {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(rgba(0,255,0,0.1) 1px, transparent 1px),
-                  linear-gradient(90deg, rgba(0,255,0,0.1) 1px, transparent 1px);
-      background-size: 20px 20px;
-      z-index: 9999;
-      opacity: 0;
-      pointer-events: none;
-      animation: gridScan 0.8s linear infinite;
-    }
-    @keyframes gridScan {
-      0% {background-position: 0 0;}
-      100% {background-position: 20px 20px;}
-    }
-
-    /* 2. 数字雨特效 */
-    #inject-rain {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 9999;
-      opacity: 0;
-      pointer-events: none;
-      font-family: Consolas, monospace;
-      font-size: 14px;
-    }
-
-    /* 3. 进度条特效 */
-    #inject-progress {
-      position: fixed;
-      bottom: 50px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 60%;
-      height: 10px;
-      background: rgba(0,0,0,0.5);
-      border: 1px solid #0f0;
-      border-radius: 5px;
-      z-index: 9999;
-      opacity: 0;
-      overflow: hidden;
-    }
-    #progress-bar {
-      width: 0%;
-      height: 100%;
-      background: linear-gradient(90deg, #0f0, #0ff);
-      border-radius: 3px;
-      animation: progressFill 6s linear forwards;
-    }
-    @keyframes progressFill {
-      0% {width: 0%;}
-      100% {width: 100%;}
-    }
-
-    /* 4. 原有扫描 + 控制台优化 */
-    #inject-scan {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(90deg, rgba(0,255,0,0.1) 0%, rgba(0,255,0,0.3) 50%, rgba(0,255,0,0.1) 100%);
-      background-size: 200% 100%;
-      z-index: 9999;
-      opacity: 0;
-      pointer-events: none;
-      animation: scanAnim 0.8s linear infinite;
-    }
-    @keyframes scanAnim {
-      0% {background-position: 200% 0;}
-      100% {background-position: -200% 0;}
-    }
-
-    #inject-console {
-      position: fixed;
-      bottom: 20px;
-      left: 20px;
-      width: 400px;
-      height: 200px;
-      background: rgba(0,0,0,0.8);
-      border: 1px solid #0f0;
-      color: #0f0;
-      font-family: Consolas, monospace;
-      font-size: 12px;
-      padding: 10px;
-      z-index: 9999;
-      opacity: 0;
-      pointer-events: none;
-      overflow: hidden;
-    }
-    #console-lines {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      top: 0;
-      left: 0;
-      animation: consoleScroll 6s linear;
-    }
-    @keyframes consoleScroll {
-      0% {top: 100%;}
-      100% {top: -100%;}
-    }
   </style>
 </head>
 
@@ -606,7 +483,7 @@
   <canvas id="canvas"></canvas>
   <div class="box">
     <div class="scene">
-      <!-- 超大双圈动画容器 -->
+      <!-- 超大双圈动画容器（替换原SVG） -->
       <div id="dc-spinner-container">
         <div id="outer-circle"></div>
         <div id="inner-circle"></div>
@@ -617,16 +494,26 @@
         <div class="div1 d3"> 欢迎使用</div>
         <div class="div1 d4"> 高鼎pubg启动器</div>
         <div class="div1 d5"> </div>
+
+        <marquee behavior="scroll" direction="left" style="color:#E0FFFF">
+        </marquee>
+
+        <marquee behavior="scroll" direction="left" style="color:#E0FFFF; text-shadow: 0 0 10px #E0FFFF;">
+          高鼎水印
+        </marquee>
+
         <div id="clock">
+          <!-- 天气显示区域（初始隐藏） -->
           <p id="weather">定位中... 加载天气信息</p>
           <p id="date" class="date"></p>
           <p id="time" class="time"></p>
           <p class="text"></p>
         </div>
       </div>
+      <!-- 放大的音乐播放器（支持进度条） -->
       <audio src="https://mpimg.cn/view.php/083ecb86d525ea04d58c032ecc2221a1.mp3" loop="loop" autoplay="autoplay" controls preload="metadata">
         您的浏览器不支持音频播放
-      
+      </audio>
     </div>
   </div>
 
@@ -634,10 +521,10 @@
   <div class="server-modal" id="serverModal">
     <div class="modal-content">
       <h2>选择游戏服务器</h2>
-      <div class="server-btn" onclick="startInject('com.tencent.ig', '全球服')">全球服</div>
-      <div class="server-btn" onclick="startInject('com.rekoo.pubgm', '台湾服')">台湾服</div>
-      <div class="server-btn" onclick="startInject('com.pubg.krmobile', '日韩服')">日韩服</div>
-      <div class="server-btn" onclick="startInject('com.vng.pubgmobile', '越南服')">越南服</div>
+      <div class="server-btn" onclick="openGame('com.tencent.ig', '全球服')">全球服</div>
+      <div class="server-btn" onclick="openGame('com.rekoo.pubgm', '台湾服')">台湾服</div>
+      <div class="server-btn" onclick="openGame('com.pubg.krmobile', '日韩服')">日韩服</div>
+      <div class="server-btn" onclick="openGame('com.vng.pubgmobile', '越南服')">越南服</div>
       <div class="server-btn" onclick="closeModal()" style="border-color: #ff4444;">关闭</div>
     </div>
   </div>
@@ -647,31 +534,6 @@
     <div id="notifTitle"></div>
     <div id="notifContent"></div>
   </div>
-
-  <!-- 注入特效元素 - 新增网格、数字雨、进度条 -->
-  <div id="inject-grid"></div>
-  <div id="inject-rain"></div>
-  <div id="inject-progress">
-    <div id="progress-bar"></div>
-  </div>
-  <div id="inject-scan"></div>
-  <div id="inject-console">
-    <div id="console-lines">
-      [+] 初始化内存注入模块...<br>
-      [+] 扫描PUBGM进程 PID: 12345<br>
-      [+] 绕过反作弊检测 SUCCESS<br>
-      [+] 加载配置文件 config.lua<br>
-      [+] 注入皮肤参数表...<br>
-      [+] 枪械属性修改完成<br>
-      [+] 加载透视脚本...<br>
-      [+] 自瞄模块注入成功<br>
-      [+] 注入成功 等待游戏启动...<br>
-      [+] 后台运行模式开启<br>
-    </div>
-  </div>
-
-  <!-- 水印容器 -->
-  <div class="watermark-container"></div>
 
   <script>
     // 时间更新函数
@@ -695,7 +557,7 @@
       return (zero + num).slice(-digit);
     }
 
-    // 粒子特效函数（保留原逻辑）
+    // 粒子特效函数（保留并优化）
     function project3D(x, y, z, vars) {
       var p, d;
       x -= vars.camX;
@@ -912,9 +774,11 @@
 
     // 弹窗和打开游戏功能
     const modal = document.getElementById('serverModal');
+    // 点击双圈容器打开弹窗
     document.getElementById('dc-spinner-container').addEventListener('click', function() {
       modal.style.display = 'flex';
     });
+    // 关闭弹窗
     function closeModal() {
       modal.style.display = 'none';
     }
@@ -934,76 +798,18 @@
       }, duration);
     }
 
-    // ===== 注入特效核心函数 - 升级为6秒三重特效 =====
-    function createDigitalRain() {
-      const rain = document.getElementById('inject-rain');
-      rain.innerHTML = '';
-      const cols = Math.floor(window.innerWidth / 14);
-      for(let i=0; i<cols; i++) {
-        const column = document.createElement('div');
-        column.style.position = 'absolute';
-        column.style.left = `${i*14}px`;
-        column.style.top = `${-Math.random()*window.innerHeight}px`;
-        column.style.color = '#0f0';
-        column.style.opacity = `${0.5 + Math.random()*0.5}`;
-        column.textContent = Math.random().toString(36).substr(2, Math.floor(Math.random()*5)+1);
-        rain.appendChild(column);
-        // 雨滴下落动画
-        column.animate([
-          {top: `${-Math.random()*window.innerHeight}px`},
-          {top: `${window.innerHeight}px`}
-        ], {
-          duration: 3000 + Math.random()*3000,
-          easing: 'linear',
-          iterations: Infinity
-        });
-      }
-    }
-
-    function startInject(packageName, serverName) {
-      closeModal();
-      // 显示所有注入特效
-      const grid = document.getElementById('inject-grid');
-      const rain = document.getElementById('inject-rain');
-      const progress = document.getElementById('inject-progress');
-      const scan = document.getElementById('inject-scan');
-      const console = document.getElementById('inject-console');
-      
-      grid.style.opacity = '1';
-      scan.style.opacity = '1';
-      console.style.opacity = '1';
-      progress.style.opacity = '1';
-      rain.style.opacity = '1';
-      createDigitalRain(); // 生成数字雨
-
-      // 6秒后关闭特效并启动游戏
-      setTimeout(() => {
-        grid.style.opacity = '0';
-        rain.style.opacity = '0';
-        progress.style.opacity = '0';
-        scan.style.opacity = '0';
-        console.style.opacity = '0';
-        // 启动游戏
-        openGame(packageName, serverName);
-      }, 6000);
-    }
-
-    // 启动游戏函数
+    // HTML专属：安卓WebView环境下的Intent启动方案
     function openGame(packageName, serverName) {
       const intentUrl = `intent:#Intent;action=android.intent.action.MAIN;category=android.intent.category.LAUNCHER;component=${packageName}/com.epicgames.ue4.SplashActivity;end`;
       window.location.href = intentUrl;
       qldtz("启动中", `正在打开${serverName}\n包名: ${packageName}`, 2000);
-      // 后台运行
-      try {
-        navigator.app.minimize();
-      } catch (e) {
-        window.blur();
-      }
+      closeModal();
     }
 
-    // 多接口天气查询
+    // 多接口天气查询（高德→百度→隐藏）
     function getWeather() {
       const weatherEl = document.getElementById('weather');
+      // 1. 尝试高德接口
       fetch('https://restapi.amap.com/v3/ip?key=0530927d32196134053856d794222113')
         .then(res => res.json())
         .then(ipData => {
@@ -1015,8 +821,9 @@
                 if (weatherData.status === '1') {
                   const weather = weatherData.lives[0];
                   weatherEl.innerHTML = `${weather.city} | ${weather.weather} | ${weather.temperature}°C`;
-                  weatherEl.style.display = 'block';
+                  weatherEl.style.display = 'block'; // 显示天气
                 } else {
+                  // 高德天气失败，尝试百度接口
                   fetch(`https://api.map.baidu.com/weather/v1/?district_id=${ipData.adcode}&data_type=all&ak=G667jUv0t5Gf0L6c6VfV4BpGQn1lGLqg`)
                     .then(res => res.json())
                     .then(baiduWeather => {
@@ -1025,7 +832,7 @@
                         weatherEl.innerHTML = `${city} | ${now.text} | ${now.temp}°C`;
                         weatherEl.style.display = 'block';
                       } else {
-                        weatherEl.style.display = 'none';
+                        weatherEl.style.display = 'none'; // 隐藏天气
                       }
                     })
                     .catch(err => {
@@ -1034,6 +841,7 @@
                 }
               })
               .catch(err => {
+                // 高德接口失败，尝试百度定位
                 fetch('https://api.map.baidu.com/location/ip?ak=G667jUv0t5Gf0L6c6VfV4BpGQn1lGLqg&coor=bd09ll')
                   .then(res => res.json())
                   .then(baiduIp => {
@@ -1062,6 +870,7 @@
                   });
               });
           } else {
+            // 高德定位失败，尝试百度定位
             fetch('https://api.map.baidu.com/location/ip?ak=G667jUv0t5Gf0L6c6VfV4BpGQn1lGLqg&coor=bd09ll')
               .then(res => res.json())
               .then(baiduIp => {
@@ -1090,56 +899,18 @@
               });
           }
         })
-                      .catch(err => {
-                weatherEl.style.display = 'none';
-              });
-          }
-        })
         .catch(err => {
+          // 所有接口失败，隐藏天气
           weatherEl.style.display = 'none';
         });
     }
 
-    // 页面加载完成后执行天气查询
-    window.onload = function() {
-      getWeather();
-      
-      // 随机移动水印生成
-      const watermarkText = "高鼎PUBGM启动器";
-      const watermarkCount = 10;
-      const container = document.querySelector('.watermark-container');
-      
-      for(let i=0; i<watermarkCount; i++) {
-        const watermark = document.createElement('div');
-        watermark.className = 'random-watermark';
-        watermark.textContent = watermarkText;
-        // 随机初始位置
-        watermark.style.left = `${Math.random() * 100}vw`;
-        watermark.style.top = `${Math.random() * 100}vh`;
-        // 随机大小
-        watermark.style.fontSize = `${12 + Math.random() * 8}px`;
-        container.appendChild(watermark);
-        
-        // 随机移动动画
-        function moveWatermark(el) {
-          const newLeft = `${Math.random() * 100}vw`;
-          const newTop = `${Math.random() * 100}vh`;
-          const duration = 5000 + Math.random() * 5000;
-          
-          el.style.transition = `left ${duration}ms ease-in-out, top ${duration}ms ease-in-out`;
-          el.style.left = newLeft;
-          el.style.top = newTop;
-          
-          setTimeout(() => moveWatermark(el), duration);
-        }
-        
-        moveWatermark(watermark);
-      }
-    };
+    // 页面加载后自动获取天气
+    window.onload = getWeather;
   </script>
 </body>
-</html>
 
+</html>
 
 
 
