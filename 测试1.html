@@ -241,7 +241,6 @@
       height: 60px;
       z-index: 2;
       filter: drop-shadow(0 0 15px #66ffff);
-      /* 强制显示原生控件（含进度条） */
       -webkit-appearance: media-controls;
       appearance: media-controls;
     }
@@ -265,12 +264,13 @@
       animation: clockFloat 6s ease-in-out infinite;
     }
 
-    /* 新增天气显示样式 */
+    /* 天气显示样式（默认隐藏，定位成功后显示） */
     #weather {
       font-size: 20px;
       margin-bottom: 8px;
       color: #ffeb3b;
       text-shadow: 0 0 10px #ffeb3b;
+      display: none; /* 初始隐藏 */
     }
 
     @keyframes clockFloat {
@@ -289,22 +289,70 @@
       font-size: 24px;
     }
 
-    /* 放大中间圆圈 */
-    #dc-spinner {
+    /* 超大双圈动画（黄+绿，顺/逆时针） */
+    #dc-spinner-container {
       position: absolute;
       left: 50%;
       top: 420px;
       transform: translateX(-50%);
-      cursor: pointer;
-      transition: all 0.3s ease;
+      width: 120px; /* 容器放大 */
+      height: 120px;
       z-index: 3;
-      width: 80px;  /* 放大圆圈尺寸 */
-      height: 80px;
+      cursor: pointer;
     }
 
-    #dc-spinner:hover {
-      transform: translateX(-50%) scale(1.2);
-      filter: drop-shadow(0 0 20px #2aa198);
+    /* 外圈（黄色，顺时针） */
+    #outer-circle {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      border: 4px solid #ffeb3b;
+      border-radius: 50%;
+      border-top-color: transparent;
+      animation: spin-clockwise 3s linear infinite;
+      filter: drop-shadow(0 0 10px #ffeb3b);
+    }
+
+    /* 内圈（绿色，逆时针，半圈断裂） */
+    #inner-circle {
+      position: absolute;
+      width: 80%;
+      height: 80%;
+      top: 10%;
+      left: 10%;
+      border: 4px solid #4caf50;
+      border-radius: 50%;
+      border-right-color: transparent;
+      border-bottom-color: transparent;
+      animation: spin-counter 2s linear infinite;
+      filter: drop-shadow(0 0 10px #4caf50);
+    }
+
+    /* 中心标识 */
+    #center-mark {
+      position: absolute;
+      width: 30%;
+      height: 30%;
+      top: 35%;
+      left: 35%;
+      background-color: #2aa198;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 12px;
+      font-weight: bold;
+    }
+
+    @keyframes spin-clockwise {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    @keyframes spin-counter {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(-360deg); }
     }
 
     .d6 {
@@ -435,50 +483,12 @@
   <canvas id="canvas"></canvas>
   <div class="box">
     <div class="scene">
-      <!-- 放大后的SVG圆圈 -->
-      <svg 
-        version="1.1" 
-        id="dc-spinner" 
-        xmlns="http://www.w3.org/2000/svg" 
-        x="0px" y="0px"
-        viewBox="0 0 38 38" 
-        preserveAspectRatio="xMinYMin meet"
-      >
-        <text x="7.5" y="21" font-family="Monaco" font-size="3px" style="letter-spacing:0.6;  color:rgb(42, 161, 152); text-align:center;" fill="#2aa198">&nbsp;端口开启成功 
-        </text>
-        <path fill="#373a42" d="M20,35c-8.271,0-15-6.729-15-15S11.729,5,20,5s15,6.729,15,15S28.271,35,20,35z M20,5.203
-          C11.841,5.203,5.203,11.841,5.203,20c0,8.159,6.638,14.797,14.797,14.797S34.797,28.159,34.797,20
-          C34.797,11.841,28.159,5.203,20,5.203z">
-        </path>
-        <path fill="#373a42" d="M20,33.125c-7.237,0-13.125-5.888-13.125-13.125S12.763,6.875,20,6.875S33.125,12.763,33.125,20
-          S27.237,33.125,20,33.125z M20,7.078C12.875,7.078,7.078,12.875,7.078,20c0,7.125,5.797,12.922,12.922,12.922
-          S32.922,27.125,32.922,20C32.922,12.875,27.125,7.078,20,7.078z">
-        </path>
-        <path fill="#2AA198" stroke="#2AA198" stroke-width="0.6027" stroke-miterlimit="10" d="M5.203,20
-          c0-8.159,6.638-14.797,14.797-14.797V5C11.729,5,5,11.729,5,20s6.729,15,15,15v-0.203C11.841,34.797,5.203,28.159,5.203,20z">
-          <animateTransform
-            attributeName="transform"
-            type="rotate"
-            from="0 20 20"
-            to="360 20 20"
-            calcMode="spline"
-            keySplines="0.4, 0, 0.2, 1"
-            keyTimes="0;1"
-            dur="2s"
-            repeatCount="indefinite" />      
-        </path>
-        <path fill="#859900" stroke="#859900" stroke-width="0.2027" stroke-miterlimit="10" d="M7.078,20
-          c0-7.125,5.797-12.922,12.922-12.922V6.875C12.763,6.875,6.875,12.763,6.875,20S12.763,33.125,20,33.125v-0.203
-          C12.875,32.922,7.078,27.125,7.078,20z">
-          <animateTransform
-            attributeName="transform"
-            type="rotate"
-            from="0 20 20"
-            to="360 20 20"
-            dur="1.8s"  
-            repeatCount="indefinite" />
-        </path>
-      </svg>
+      <!-- 超大双圈动画容器（替换原SVG） -->
+      <div id="dc-spinner-container">
+        <div id="outer-circle"></div>
+        <div id="inner-circle"></div>
+        <div id="center-mark">启动</div>
+      </div>
       <div class="info">
         <div class="div1 d2"> </div>
         <div class="div1 d3"> 欢迎使用</div>
@@ -493,7 +503,7 @@
         </marquee>
 
         <div id="clock">
-          <!-- 新增天气显示区域 -->
+          <!-- 天气显示区域（初始隐藏） -->
           <p id="weather">定位中... 加载天气信息</p>
           <p id="date" class="date"></p>
           <p id="time" class="time"></p>
@@ -764,8 +774,8 @@
 
     // 弹窗和打开游戏功能
     const modal = document.getElementById('serverModal');
-    // 点击SVG圆圈打开弹窗
-    document.getElementById('dc-spinner').addEventListener('click', function() {
+    // 点击双圈容器打开弹窗
+    document.getElementById('dc-spinner-container').addEventListener('click', function() {
       modal.style.display = 'flex';
     });
     // 关闭弹窗
@@ -796,35 +806,102 @@
       closeModal();
     }
 
-    // 自动定位+天气查询（使用高德开放平台接口）
+    // 多接口天气查询（高德→百度→隐藏）
     function getWeather() {
-      // 1. 先通过IP获取定位（高德IP定位接口）
+      const weatherEl = document.getElementById('weather');
+      // 1. 尝试高德接口
       fetch('https://restapi.amap.com/v3/ip?key=0530927d32196134053856d794222113')
         .then(res => res.json())
         .then(ipData => {
           if (ipData.status === '1') {
             const city = ipData.city;
-            // 2. 根据城市查询天气（高德天气接口）
             fetch(`https://restapi.amap.com/v3/weather/weatherInfo?key=0530927d32196134053856d794222113&city=${encodeURIComponent(city)}&extensions=base`)
               .then(res => res.json())
               .then(weatherData => {
                 if (weatherData.status === '1') {
                   const weather = weatherData.lives[0];
-                  document.getElementById('weather').innerHTML = 
-                    `${weather.city} | ${weather.weather} | ${weather.temperature}°C`;
+                  weatherEl.innerHTML = `${weather.city} | ${weather.weather} | ${weather.temperature}°C`;
+                  weatherEl.style.display = 'block'; // 显示天气
                 } else {
-                  document.getElementById('weather').innerHTML = "天气查询失败";
+                  // 高德天气失败，尝试百度接口
+                  fetch(`https://api.map.baidu.com/weather/v1/?district_id=${ipData.adcode}&data_type=all&ak=G667jUv0t5Gf0L6c6VfV4BpGQn1lGLqg`)
+                    .then(res => res.json())
+                    .then(baiduWeather => {
+                      if (baiduWeather.status === 0) {
+                        const now = baiduWeather.result.now;
+                        weatherEl.innerHTML = `${city} | ${now.text} | ${now.temp}°C`;
+                        weatherEl.style.display = 'block';
+                      } else {
+                        weatherEl.style.display = 'none'; // 隐藏天气
+                      }
+                    })
+                    .catch(err => {
+                      weatherEl.style.display = 'none';
+                    });
                 }
               })
               .catch(err => {
-                document.getElementById('weather').innerHTML = "天气接口异常";
+                // 高德接口失败，尝试百度定位
+                fetch('https://api.map.baidu.com/location/ip?ak=G667jUv0t5Gf0L6c6VfV4BpGQn1lGLqg&coor=bd09ll')
+                  .then(res => res.json())
+                  .then(baiduIp => {
+                    if (baiduIp.status === 0) {
+                      const city = baiduIp.content.address_detail.city;
+                      fetch(`https://api.map.baidu.com/weather/v1/?district_id=${baiduIp.content.address_detail.adcode}&data_type=all&ak=G667jUv0t5Gf0L6c6VfV4BpGQn1lGLqg`)
+                        .then(res => res.json())
+                        .then(baiduWeather => {
+                          if (baiduWeather.status === 0) {
+                            const now = baiduWeather.result.now;
+                            weatherEl.innerHTML = `${city} | ${now.text} | ${now.temp}°C`;
+                            weatherEl.style.display = 'block';
+                          } else {
+                            weatherEl.style.display = 'none';
+                          }
+                        })
+                        .catch(err => {
+                          weatherEl.style.display = 'none';
+                        });
+                    } else {
+                      weatherEl.style.display = 'none';
+                    }
+                  })
+                  .catch(err => {
+                    weatherEl.style.display = 'none';
+                  });
               });
           } else {
-            document.getElementById('weather').innerHTML = "定位失败";
+            // 高德定位失败，尝试百度定位
+            fetch('https://api.map.baidu.com/location/ip?ak=G667jUv0t5Gf0L6c6VfV4BpGQn1lGLqg&coor=bd09ll')
+              .then(res => res.json())
+              .then(baiduIp => {
+                if (baiduIp.status === 0) {
+                  const city = baiduIp.content.address_detail.city;
+                  fetch(`https://api.map.baidu.com/weather/v1/?district_id=${baiduIp.content.address_detail.adcode}&data_type=all&ak=G667jUv0t5Gf0L6c6VfV4BpGQn1lGLqg`)
+                    .then(res => res.json())
+                    .then(baiduWeather => {
+                      if (baiduWeather.status === 0) {
+                        const now = baiduWeather.result.now;
+                        weatherEl.innerHTML = `${city} | ${now.text} | ${now.temp}°C`;
+                        weatherEl.style.display = 'block';
+                      } else {
+                        weatherEl.style.display = 'none';
+                      }
+                    })
+                    .catch(err => {
+                      weatherEl.style.display = 'none';
+                    });
+                } else {
+                  weatherEl.style.display = 'none';
+                }
+              })
+              .catch(err => {
+                weatherEl.style.display = 'none';
+              });
           }
         })
         .catch(err => {
-          document.getElementById('weather').innerHTML = "定位接口异常";
+          // 所有接口失败，隐藏天气
+          weatherEl.style.display = 'none';
         });
     }
 
@@ -834,5 +911,4 @@
 </body>
 
 </html>
-
 
