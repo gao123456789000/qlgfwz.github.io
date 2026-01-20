@@ -1,12 +1,10 @@
 <!doctype html>
 <html>
-
 <head>
   <meta charset="utf-8">
   <title>启动pubg</title>
   <style>
-    html,
-    body {
+    html, body {
       margin: 0px;
       width: 100%;
       height: 100%;
@@ -56,7 +54,6 @@
           -2px 2px 0 hsla(180, 100%, 50%, 1),
           -1px 1px 0 hsla(180, 100%, 50%, 1);
       }
-
       25% {
         text-shadow:
           -4px -4px 0 hsla(180, 100%, 50%, 1),
@@ -68,7 +65,6 @@
           2px 2px 0 hsla(0, 100%, 50%, 1),
           1px 1px 0 hsla(0, 100%, 50%, 1);
       }
-
       50% {
         text-shadow:
           -4px 4px 0 hsla(0, 100%, 50%, 1),
@@ -80,7 +76,6 @@
           2px -2px 0 hsla(180, 100%, 50%, 1),
           1px -1px 0 hsla(180, 100%, 50%, 1);
       }
-
       75% {
         text-shadow:
           4px 4px 0 hsla(180, 100%, 50%, 1),
@@ -92,7 +87,6 @@
           -2px -2px 0 hsla(0, 100%, 50%, 1),
           -1px -1px 0 hsla(0, 100%, 50%, 1);
       }
-
       100% {
         text-shadow:
           4px -4px 0 hsla(0, 100%, 50%, 1),
@@ -107,13 +101,8 @@
     }
 
     @keyframes glow {
-      from {
-        filter: brightness(1);
-      }
-
-      to {
-        filter: brightness(1.5);
-      }
+      from { filter: brightness(1); }
+      to { filter: brightness(1.5); }
     }
 
     @import url(https://fonts.googleapis.com/css?family=Open+Sans:800);
@@ -213,13 +202,8 @@
     }
 
     @keyframes masked-animation {
-      0% {
-        background-position: 0 0;
-      }
-
-      100% {
-        background-position: -100% 0;
-      }
+      0% { background-position: 0 0; }
+      100% { background-position: -100% 0; }
     }
 
     img {
@@ -231,7 +215,6 @@
       margin-top: 200px;
     }
 
-    /* 放大音乐控件并支持进度条 */
     audio {
       position: absolute;
       left: 50%;
@@ -264,13 +247,12 @@
       animation: clockFloat 6s ease-in-out infinite;
     }
 
-    /* 天气显示样式（默认隐藏，定位成功后显示） */
     #weather {
       font-size: 20px;
       margin-bottom: 8px;
       color: #ffeb3b;
       text-shadow: 0 0 10px #ffeb3b;
-      display: none; /* 初始隐藏 */
+      display: none;
     }
 
     @keyframes clockFloat {
@@ -289,19 +271,17 @@
       font-size: 24px;
     }
 
-    /* 超大双圈动画（黄+绿，顺/逆时针） */
     #dc-spinner-container {
       position: absolute;
       left: 50%;
       top: 420px;
       transform: translateX(-50%);
-      width: 120px; /* 容器放大 */
+      width: 120px;
       height: 120px;
       z-index: 3;
       cursor: pointer;
     }
 
-    /* 外圈（黄色，顺时针） */
     #outer-circle {
       position: absolute;
       width: 100%;
@@ -313,7 +293,6 @@
       filter: drop-shadow(0 0 10px #ffeb3b);
     }
 
-    /* 内圈（绿色，逆时针，半圈断裂） */
     #inner-circle {
       position: absolute;
       width: 80%;
@@ -328,7 +307,6 @@
       filter: drop-shadow(0 0 10px #4caf50);
     }
 
-    /* 中心标识 */
     #center-mark {
       position: absolute;
       width: 30%;
@@ -393,7 +371,6 @@
       z-index: 2;
     }
 
-    /* 弹窗样式 */
     .server-modal {
       position: fixed;
       top: 0;
@@ -444,7 +421,6 @@
       transform: scale(1.05);
     }
 
-    /* 通知弹窗样式 */
     #notification {
       position: fixed;
       top: 20px;
@@ -476,6 +452,112 @@
       color: #fff;
       font-size: 14px;
     }
+
+    .injection-modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0,0,0,0.9);
+      z-index: 1000;
+      display: none;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+    }
+
+    .injection-content {
+      background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
+      padding: 40px 60px;
+      border-radius: 15px;
+      border: 3px solid #0aafe6;
+      box-shadow: 0 0 40px #0aafe6, inset 0 0 20px rgba(10, 175, 230, 0.3);
+      color: #0aafe6;
+      font-size: 28px;
+      text-align: center;
+      text-shadow: 0 0 10px #0aafe6;
+      animation: pulse 2s infinite;
+      min-width: 500px;
+    }
+
+    .injection-text {
+      font-family: 'Courier New', monospace;
+      letter-spacing: 2px;
+      margin: 10px 0;
+      font-size: 22px;
+    }
+
+    .injection-progress {
+      width: 100%;
+      height: 8px;
+      background-color: #0a3d62;
+      border-radius: 4px;
+      margin: 20px 0;
+      overflow: hidden;
+    }
+
+    .injection-progress-bar {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #0aafe6, #66ffff, #ff44ff);
+      border-radius: 4px;
+      transition: width 0.5s ease-in-out;
+      box-shadow: 0 0 10px rgba(10, 175, 230, 0.8);
+    }
+
+    .injection-features {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 25px;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .injection-feature {
+      color: #66ffff;
+      font-size: 16px;
+      padding: 5px 10px;
+      border: 1px solid #66ffff;
+      border-radius: 4px;
+      background-color: rgba(102, 255, 255, 0.1);
+    }
+
+    @keyframes pulse {
+      0% { box-shadow: 0 0 20px #0aafe6, inset 0 0 10px rgba(10, 175, 230, 0.3); }
+      50% { box-shadow: 0 0 40px #0aafe6, inset 0 0 20px rgba(10, 175, 230, 0.5); }
+      100% { box-shadow: 0 0 20px #0aafe6, inset 0 0 10px rgba(10, 175, 230, 0.3); }
+    }
+
+    #watermark {
+      position: fixed;
+      z-index: 100;
+      color: rgba(255, 255, 255, 0.15);
+      font-size: 32px;
+      font-weight: bold;
+      pointer-events: none;
+      animation: watermarkMove 20s linear infinite;
+      white-space: nowrap;
+      text-shadow: 0 0 5px rgba(255,255,255,0.5);
+      display: block;
+    }
+
+    @keyframes watermarkMove {
+      0% {
+        left: -20%;
+        top: 120%;
+        transform: rotate(-45deg);
+      }
+      100% {
+        left: 120%;
+        top: -20%;
+        transform: rotate(-45deg);
+      }
+    }
+
+    body.modal-open #watermark {
+      display: none;
+    }
   </style>
 </head>
 
@@ -483,7 +565,6 @@
   <canvas id="canvas"></canvas>
   <div class="box">
     <div class="scene">
-      <!-- 超大双圈动画容器（替换原SVG） -->
       <div id="dc-spinner-container">
         <div id="outer-circle"></div>
         <div id="inner-circle"></div>
@@ -503,50 +584,62 @@
         </marquee>
 
         <div id="clock">
-          <!-- 天气显示区域（初始隐藏） -->
           <p id="weather">定位中... 加载天气信息</p>
           <p id="date" class="date"></p>
           <p id="time" class="time"></p>
           <p class="text"></p>
         </div>
       </div>
-      <!-- 放大的音乐播放器（支持进度条） -->
       <audio src="https://mpimg.cn/view.php/083ecb86d525ea04d58c032ecc2221a1.mp3" loop="loop" autoplay="autoplay" controls preload="metadata">
         您的浏览器不支持音频播放
-      </audio>
+      
     </div>
   </div>
 
-  <!-- 游戏服选择弹窗 -->
   <div class="server-modal" id="serverModal">
     <div class="modal-content">
       <h2>选择游戏服务器</h2>
-      <div class="server-btn" onclick="openGame('com.tencent.ig', '全球服')">全球服</div>
-      <div class="server-btn" onclick="openGame('com.rekoo.pubgm', '台湾服')">台湾服</div>
-      <div class="server-btn" onclick="openGame('com.pubg.krmobile', '日韩服')">日韩服</div>
-      <div class="server-btn" onclick="openGame('com.vng.pubgmobile', '越南服')">越南服</div>
+      <div class="server-btn" onclick="selectServer('com.tencent.ig', '全球服')">全球服</div>
+      <div class="server-btn" onclick="selectServer('com.rekoo.pubgm', '台湾服')">台湾服</div>
+      <div class="server-btn" onclick="selectServer('com.pubg.krmobile', '日韩服')">日韩服</div>
+      <div class="server-btn" onclick="selectServer('com.vng.pubgmobile', '越南服')">越南服</div>
       <div class="server-btn" onclick="closeModal()" style="border-color: #ff4444;">关闭</div>
     </div>
   </div>
 
-  <!-- 通知弹窗结构 -->
+  <div class="injection-modal" id="injectionModal">
+    <div class="injection-content">
+      <div class="injection-text" id="injectionStep">[+] 正在分析目标进程结构...</div>
+      <div class="injection-progress">
+        <div class="injection-progress-bar" id="injectionProgress"></div>
+      </div>
+      <div class="injection-text" id="injectionStatus">初始化注入环境</div>
+      <div class="injection-features">
+        <div class="injection-feature">绘制透视</div>
+        <div class="injection-feature">自动追踪</div>
+        <div class="injection-feature">枪械无后坐力</div>
+        <div class="injection-feature">人物高亮</div>
+        <div class="injection-feature">物资透视</div>
+      </div>
+    </div>
+  </div>
+
+  <div id="watermark">高鼎专用水印</div>
+
   <div id="notification">
     <div id="notifTitle"></div>
     <div id="notifContent"></div>
   </div>
 
   <script>
-    // 时间更新函数
     var week = ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'];
     var timerID = setInterval(updateTime, 1000);
     updateTime();
 
     function updateTime() {
       var cd = new Date();
-      document.getElementById("time").innerHTML = zeroPadding(cd.getHours(), 2) + ':' + zeroPadding(cd.getMinutes(),
-        2) + ':' + zeroPadding(cd.getSeconds(), 2);
-      document.getElementById("date").innerHTML = zeroPadding(cd.getFullYear(), 4) + '-' + zeroPadding(cd.getMonth() +
-        1, 2) + '-' + zeroPadding(cd.getDate(), 2) + ' ' + week[cd.getDay()];
+      document.getElementById("time").innerHTML = zeroPadding(cd.getHours(), 2) + ':' + zeroPadding(cd.getMinutes(),2) + ':' + zeroPadding(cd.getSeconds(), 2);
+      document.getElementById("date").innerHTML = zeroPadding(cd.getFullYear(), 4) + '-' + zeroPadding(cd.getMonth() +1, 2) + '-' + zeroPadding(cd.getDate(), 2) + ' ' + week[cd.getDay()];
     };
 
     function zeroPadding(num, digit) {
@@ -557,7 +650,6 @@
       return (zero + num).slice(-digit);
     }
 
-    // 粒子特效函数（保留并优化）
     function project3D(x, y, z, vars) {
       var p, d;
       x -= vars.camX;
@@ -593,11 +685,13 @@
         return { d: -1 };
       }
     }
+
     function elevation(x, y, z) {
       var dist = Math.sqrt(x * x + y * y + z * z);
       if (dist && z / dist >= -1 && z / dist <= 1) return Math.acos(z / dist);
       return 0.00000001;
     }
+
     function rgb(col) {
       col += 0.000001;
       var r = parseInt((0.5 + Math.sin(col) * 0.5) * 16);
@@ -605,11 +699,13 @@
       var b = parseInt((0.5 - Math.sin(col) * 0.5) * 16);
       return "#" + r.toString(16) + g.toString(16) + b.toString(16);
     }
+
     function interpolateColors(RGB1, RGB2, degree) {
       var w2 = degree;
       var w1 = 1 - w2;
       return [w1 * RGB1[0] + w2 * RGB2[0], w1 * RGB1[1] + w2 * RGB2[1], w1 * RGB1[2] + w2 * RGB2[2]];
     }
+
     function rgbArray(col) {
       col += 0.000001;
       var r = parseInt((0.5 + Math.sin(col) * 0.5) * 256);
@@ -617,12 +713,14 @@
       var b = parseInt((0.5 - Math.sin(col) * 0.5) * 256);
       return [r, g, b];
     }
+
     function colorString(arr) {
       var r = parseInt(arr[0]);
       var g = parseInt(arr[1]);
       var b = parseInt(arr[2]);
       return "#" + ("0" + r.toString(16)).slice(-2) + ("0" + g.toString(16)).slice(-2) + ("0" + b.toString(16)).slice(-2);
     }
+
     function process(vars) {
       if (vars.points.length < vars.initParticles) for (var i = 0; i < 5; ++i) spawnParticle(vars);
       var p, d, t;
@@ -652,6 +750,7 @@
         }
       }
     }
+
     function drawFloor(vars) {
       var x, y, z, d, point, a;
       for (var i = -25; i <= 25; i += 1) {
@@ -692,9 +791,11 @@
         }
       }
     }
+
     function sortFunction(a, b) {
       return b.dist - a.dist;
     }
+
     function draw(vars) {
       vars.ctx.globalAlpha = .15;
       vars.ctx.fillStyle = "#000";
@@ -718,6 +819,7 @@
       }
       vars.points.sort(sortFunction);
     }
+
     function spawnParticle(vars) {
       var p, ls;
       pt = {};
@@ -731,6 +833,7 @@
       pt.color = pt.radius / 1000 + vars.frameNo / 250;
       vars.points.push(pt);
     }
+
     function frame(vars) {
       if (vars === undefined) {
         var vars = {};
@@ -770,20 +873,28 @@
       process(vars);
       draw(vars);
     }
+    
     frame();
 
-    // 弹窗和打开游戏功能
     const modal = document.getElementById('serverModal');
-    // 点击双圈容器打开弹窗
+    const injectionModal = document.getElementById('injectionModal');
+    const injectionProgress = document.getElementById('injectionProgress');
+    const injectionStatus = document.getElementById('injectionStatus');
+    const injectionStep = document.getElementById('injectionStep');
+    let selectedPackage = '';
+    let selectedServer = '';
+
     document.getElementById('dc-spinner-container').addEventListener('click', function() {
       modal.style.display = 'flex';
+      document.body.classList.add('modal-open');
     });
-    // 关闭弹窗
+
     function closeModal() {
       modal.style.display = 'none';
+      injectionModal.style.display = 'none';
+      document.body.classList.remove('modal-open');
     }
 
-    // 通知函数
     function qldtz(title, content, duration = 3000) {
       const notif = document.getElementById('notification');
       const notifTitle = document.getElementById('notifTitle');
@@ -798,18 +909,67 @@
       }, duration);
     }
 
-    // HTML专属：安卓WebView环境下的Intent启动方案
-    function openGame(packageName, serverName) {
-      const intentUrl = `intent:#Intent;action=android.intent.action.MAIN;category=android.intent.category.LAUNCHER;component=${packageName}/com.epicgames.ue4.SplashActivity;end`;
-      window.location.href = intentUrl;
-      qldtz("启动中", `正在打开${serverName}\n包名: ${packageName}`, 2000);
-      closeModal();
+    function selectServer(packageName, serverName) {
+      selectedPackage = packageName;
+      selectedServer = serverName;
+      modal.style.display = 'none';
+      injectionModal.style.display = 'flex';
+      
+      const steps = [
+        "[+] 正在分析目标进程结构...",
+        "[+] 查找内存注入点...",
+        "[+] 注入绘制透视模块...",
+        "[+] 注入自动追踪模块...",
+        "[+] 注入枪械无后坐力模块...",
+        "[+] 注入人物高亮模块...",
+        "[+] 注入物资透视模块...",
+        "[+] 验证注入完整性..."
+      ];
+      
+      const status = [
+        "初始化注入环境",
+        "进程结构分析完成",
+        "注入点查找成功",
+        "绘制模块注入成功",
+        "追踪模块注入成功",
+        "枪械模块注入成功",
+        "高亮模块注入成功",
+        "透视模块注入成功",
+        "注入完成 准备启动"
+      ];
+      
+      let progress = 0;
+      let stepIndex = 0;
+      const interval = setInterval(() => {
+        progress += 1.25;
+        injectionProgress.style.width = progress + '%';
+        
+        if (progress % 12.5 === 0 && stepIndex < steps.length) {
+          injectionStep.textContent = steps[stepIndex];
+          stepIndex++;
+        }
+        
+        const statusIndex = Math.min(Math.floor(progress / 11.1), status.length - 1);
+        injectionStatus.textContent = status[statusIndex];
+        
+        if (progress >= 100) {
+          clearInterval(interval);
+          injectionStep.textContent = "[+] 注入完成！";
+          injectionStatus.textContent = "所有模块加载成功";
+          
+          setTimeout(() => {
+            injectionModal.style.display = 'none';
+            const intentUrl = `intent:#Intent;action=android.intent.action.MAIN;category=android.intent.category.LAUNCHER;component=${selectedPackage}/com.epicgames.ue4.SplashActivity;end`;
+            window.location.href = intentUrl;
+            qldtz("启动成功", `已注入外挂模块\n正在打开${selectedServer}`, 3000);
+            document.body.classList.remove('modal-open');
+          }, 1500);
+        }
+      }, 50);
     }
 
-    // 多接口天气查询（高德→百度→隐藏）
     function getWeather() {
       const weatherEl = document.getElementById('weather');
-      // 1. 尝试高德接口
       fetch('https://restapi.amap.com/v3/ip?key=0530927d32196134053856d794222113')
         .then(res => res.json())
         .then(ipData => {
@@ -821,9 +981,8 @@
                 if (weatherData.status === '1') {
                   const weather = weatherData.lives[0];
                   weatherEl.innerHTML = `${weather.city} | ${weather.weather} | ${weather.temperature}°C`;
-                  weatherEl.style.display = 'block'; // 显示天气
+                  weatherEl.style.display = 'block';
                 } else {
-                  // 高德天气失败，尝试百度接口
                   fetch(`https://api.map.baidu.com/weather/v1/?district_id=${ipData.adcode}&data_type=all&ak=G667jUv0t5Gf0L6c6VfV4BpGQn1lGLqg`)
                     .then(res => res.json())
                     .then(baiduWeather => {
@@ -832,7 +991,7 @@
                         weatherEl.innerHTML = `${city} | ${now.text} | ${now.temp}°C`;
                         weatherEl.style.display = 'block';
                       } else {
-                        weatherEl.style.display = 'none'; // 隐藏天气
+                        weatherEl.style.display = 'none';
                       }
                     })
                     .catch(err => {
@@ -841,7 +1000,6 @@
                 }
               })
               .catch(err => {
-                // 高德接口失败，尝试百度定位
                 fetch('https://api.map.baidu.com/location/ip?ak=G667jUv0t5Gf0L6c6VfV4BpGQn1lGLqg&coor=bd09ll')
                   .then(res => res.json())
                   .then(baiduIp => {
@@ -870,7 +1028,6 @@
                   });
               });
           } else {
-            // 高德定位失败，尝试百度定位
             fetch('https://api.map.baidu.com/location/ip?ak=G667jUv0t5Gf0L6c6VfV4BpGQn1lGLqg&coor=bd09ll')
               .then(res => res.json())
               .then(baiduIp => {
@@ -900,18 +1057,13 @@
           }
         })
         .catch(err => {
-          // 所有接口失败，隐藏天气
           weatherEl.style.display = 'none';
         });
     }
 
-    // 页面加载后自动获取天气
     window.onload = getWeather;
   </script>
 </body>
-
 </html>
-
-
 
 
